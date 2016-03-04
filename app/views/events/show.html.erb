@@ -7,7 +7,7 @@
 
 <p>
   <strong>Start date:</strong>
-  <%= @event.start_date %>
+  <%= @event.start_date.strftime("%m/%d/%Y") %>
 </p>
 
 <p>
@@ -16,9 +16,9 @@
 </p>
 
 <p>
-  <strong>Delivery date:</strong>
+  <strong>Delivery dates:</strong><br>
   <% @event.delivery_dates.each do |delivery| %>
-  	<%= delivery.delivery.strftime("%m/%d/%Y") %>
+  	<%= delivery.delivery.strftime("%m/%d/%Y") %><br>
   <% end %>
 </p>
 
