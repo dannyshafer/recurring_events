@@ -1,4 +1,5 @@
 class EventsController < ApplicationController
+  require 'date'
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   # GET /events
@@ -25,8 +26,14 @@ class EventsController < ApplicationController
   # POST /events.json
   def create
     @event = Event.new(event_params)
-    @delivery_date = #realization that delivery_date should be its own class
-    @event.delivery_date = @delivery_date
+    puts "_"*100
+    merged_date = DateTime.new()
+    puts "_"*100
+    if is_not_holiday(params[:start_date]) && is_weekday(params[:start_date])
+      puts "beck yeah it works! "*100
+    else
+      puts "boo"*100
+    end
     respond_to do |format|
       if @event.save
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
@@ -72,4 +79,20 @@ class EventsController < ApplicationController
     def event_params
       params.require(:event).permit(:name, :start_date, :occurence_frequency)
     end
+
+    def is_not_holiday(date)
+      if date != "becky"
+            true
+        else
+            false
+        end
+    end
+
+    def is_weekday(date)
+          if !date.sunday? && !date.saturday? 
+              true
+          else
+              false
+          end
+      end
 end

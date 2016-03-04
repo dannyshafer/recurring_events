@@ -22,9 +22,8 @@ ActiveRecord::Schema.define(version: 20160304192509) do
 
   create_table "events", force: :cascade do |t|
     t.string   "name"
-    t.datetime "start_date"
+    t.date     "start_date"
     t.integer  "occurence_frequency"
-    t.datetime "delivery_date"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
   end
