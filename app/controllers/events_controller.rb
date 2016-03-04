@@ -80,7 +80,11 @@ class EventsController < ApplicationController
     end
 
     def is_non_holiday_weekday(date)
-      if !date.to_date.sunday? && !date.to_date.saturday? #&& !Holidays.on(date, :us).include?(["New Year's Day","Martin Luther King, Jr. Day","Presidents' Day","Memorial Day","Independence Day","Labor Day","Columbus Day","Veterans' Day","Thanksgiving Day","Christmas Day"])
+      holidays = []
+      Holidays.on(date.to_date, :us).each do |holiday|
+        holidays << holiday[:name]
+      end
+      if !date.to_date.sunday? && !date.to_date.saturday? && !(holidays.any? { |holiday| ["New Year's Day","Martin Luther King, Jr. Day","Presidents' Day","Memorial Day","Independence Day","Labor Day","Columbus Day","Veterans' Day","Thanksgiving Day","Christmas Day"].include?(holiday) } )
         return date
       else
         @date = date.to_s.split("-").map(&:to_i)
