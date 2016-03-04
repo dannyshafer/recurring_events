@@ -26,16 +26,14 @@ class EventsController < ApplicationController
   # POST /events.json
   def create
     @event = Event.new(event_params)
-    puts "_"*100
-    merged_date = DateTime.new()
-    puts "_"*100
-    if is_not_holiday(params[:start_date]) && is_weekday(params[:start_date])
-      puts "beck yeah it works! "*100
-    else
-      puts "boo"*100
-    end
     respond_to do |format|
       if @event.save
+        puts @event.start_date
+        # if is_not_holiday(params[:start_date]) && is_weekday(params[:start_date])
+        #   puts "beck yeah it works! "*100
+        # else
+        #   puts "boo"*100
+        # end
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
       else
