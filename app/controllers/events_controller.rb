@@ -31,8 +31,8 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.save
         @date = is_non_holiday_weekday(@event.start_date)
-        DeliveryDate.create(delivery: @event.start_date, event_id: @event.id)
-        future_deliveries(@event.start_date, @event.occurence_frequency)
+        DeliveryDate.create(delivery: @date, event_id: @event.id)
+        future_deliveries(@date, @event.occurence_frequency)
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
       else
@@ -49,8 +49,8 @@ class EventsController < ApplicationController
       if @event.update(event_params)
         @event.delivery_dates.destroy_all
         @date = is_non_holiday_weekday(@event.start_date)
-        DeliveryDate.create(delivery: @event.start_date, event_id: @event.id)
-        future_deliveries(@event.start_date, @event.occurence_frequency)
+        DeliveryDate.create(delivery: @date, event_id: @event.id)
+        future_deliveries(@date, @event.occurence_frequency)
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
       else
