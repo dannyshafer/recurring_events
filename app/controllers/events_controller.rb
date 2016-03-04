@@ -11,6 +11,7 @@ class EventsController < ApplicationController
   # GET /events/1
   # GET /events/1.json
   def show
+    @delivery_dates = @event.delivery_dates
   end
 
   # GET /events/new
@@ -26,14 +27,17 @@ class EventsController < ApplicationController
   # POST /events.json
   def create
     @event = Event.new(event_params)
+    @event.day_of_month = @event.start_date.to_s.split("-").last
     respond_to do |format|
       if @event.save
-        puts @event.start_date
-        # if is_not_holiday(params[:start_date]) && is_weekday(params[:start_date])
-        #   puts "beck yeah it works! "*100
-        # else
-        #   puts "boo"*100
-        # end
+        #start calculating delivery dates
+        if is_not_holiday(@event.start_date) && is_weekday(@event.start_date)
+          DeliveryDate.create(delivery: @event.start_date, event_id: @event.id)
+          future_deliveries(@event.start_date, @event.occurence_frequency)
+        else
+          #adjust the date by one and make delivery date
+          puts "boo"*100
+        end
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
       else
@@ -79,18 +83,29 @@ class EventsController < ApplicationController
     end
 
     def is_not_holiday(date)
-      if date != "becky"
-            true
-        else
-            false
-        end
+      if date != "holiday" #come back to this later and do a real holiday check
+        true
+      else
+        false
+      end
     end
 
     def is_weekday(date)
-          if !date.sunday? && !date.saturday? 
-              true
-          else
-              false
-          end
+      if !date.sunday? && !date.saturday? 
+        true
+      else
+        false
       end
-end
+    end
+
+    def future_deliveries(date, occurence_frequency)
+      counter = 1
+      4.times do
+        @date = date.to_s.split("-")
+        @date[1] = (@date[1].to_i + occurence_frequency*counter).to_s
+        @date = @date.join("-")
+        DeliveryDate.create(delivery: @date, event_id: @event.id)
+        counter += 1
+      end
+    end
+  end

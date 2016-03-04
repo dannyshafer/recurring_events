@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20160304192509) do
   create_table "events", force: :cascade do |t|
     t.string   "name"
     t.date     "start_date"
+    t.integer  "day_of_month"
     t.integer  "occurence_frequency"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false

@@ -17,7 +17,9 @@
 
 <p>
   <strong>Delivery date:</strong>
-  <%# @event.delivery_date %>
+  <% @event.delivery_dates.each do |delivery| %>
+  	<%= delivery.delivery.strftime("%m/%d/%Y") %>
+  <% end %>
 </p>
 
 <%= link_to 'Edit', edit_event_path(@event) %> |
