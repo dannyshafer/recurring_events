@@ -1,5 +1,4 @@
 class EventsController < ApplicationController
-  require 'date'
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   # GET /events
@@ -72,13 +71,5 @@ class EventsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
       params.require(:event).permit(:name, :start_date, :occurence_frequency)
-    end
-
-    def is_weekday(date)
-        if !date.sunday? && !date.saturday? 
-            true
-        else
-            false
-        end
     end
 end
